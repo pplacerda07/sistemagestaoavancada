@@ -45,6 +45,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
             created_at: now(),
             recorrencia: null,
             recorrencia_pai_id: null,
+            visivel_portal: true,
         }
         store.tarefas.push(tarefa)
         return tarefa
