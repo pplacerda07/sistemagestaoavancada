@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET!
+const JWT_SECRET = process.env.JWT_SECRET || 'crm_fiora_super_secret_jwt_key_2024_production_ready'
 
 export interface JWTPayload {
     id: string
