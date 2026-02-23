@@ -22,20 +22,28 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     return NextResponse.json(atividades)
 }
 
-// Internal helper — call this from other routes to register an activity
-export function registrarAtividade(
-    cliente_id: string,
-    tipo: string,
-    descricao: string,
-    usuario_id: string,
-    usuario_nome: string
-) {
+// Rota para registrar uma nova atividade
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const user = await getUser(req)
+    if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+
+    const { id: cliente_id } = await params
+    const { tipo, descricao } = await req.json()
+
+    if (!tipo || !descricao) {
+        return NextResponse.json({ error: 'Dados incompletos' }, { status: 400 })
+    }
+
     const atividade: DBAtividade = {
         id: 'atv-' + uuid(),
-        cliente_id, tipo, descricao,
-        usuario_id, usuario_nome,
+        cliente_id,
+        tipo,
+        descricao,
+        usuario_id: user.id,
+        usuario_nome: user.nome,
         created_at: now(),
     }
+
     store.atividades.push(atividade)
-    return atividade
+    return NextResponse.json(atividade, { status: 201 })
 }
