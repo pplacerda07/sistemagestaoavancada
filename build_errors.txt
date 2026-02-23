@@ -1,0 +1,1540 @@
+﻿Ôû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+
+node.exe : ÔÜá The 
+"middleware" file 
+convention is 
+deprecated. Please 
+use "proxy" instead. 
+Learn more: https://n
+extjs.org/docs/messag
+es/middleware-to-prox
+y
+No linha:1 
+caractere:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (ÔÜá The   
+  "middle...lewar    
+e-to-proxy:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+  Creating an optimized production build ...
+
+> Build error 
+occurred
+Error: Turbopack 
+build failed with 9 
+errors:
+./app/clientes/page.t
+sx:4:1
+Module not found: 
+Can't resolve 
+'lucide-react'
+[0m [90m 2 |[39m
+ [90m 3 |[39m 
+[36mimport[39m { 
+useEffect[33m,[39m 
+useState } 
+[36mfrom[39m 
+[32m'react'[39m
+[31m[1m>[22m[39m
+[90m 4 |[39m 
+[36mimport[39m { [
+33mPlus[39m[33m,[3
+9m [33mSearch[39m[
+33m,[39m [33mPencil
+[39m[33m,[39m [33
+mTrash2[39m[33m,[3
+9m [33mX[39m[33m,
+[39m [33mLoader2[39
+m[33m,[39m 
+[33mBuilding2[39m 
+} [36mfrom[39m [32
+m'lucide-react'[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+ [90m 5 |[39m 
+[36mimport[39m { [
+33mCliente[39m[33m,
+[39m [33mCreateClie
+nteDTO[39m[33m,[39
+m [33mStatusCliente
+[39m[33m,[39m [33m
+TipoContrato[39m } 
+[36mfrom[39m [32m'
+@/types/cliente'[39m
+ [90m 6 |[39m 
+[36mimport[39m { fo
+rmatCurrency[33m,[3
+9m formatDate[33m,[
+39m formatPhone } 
+[36mfrom[39m [32m'
+@/lib/utils/formatter
+s'[39m
+ [90m 7 |[39m[0m
+
+
+
+Import traces:
+  Client Component 
+Browser:
+    ./app/clientes/pa
+ge.tsx [Client 
+Component Browser]
+    ./app/clientes/pa
+ge.tsx [Server 
+Component]
+
+  Client Component 
+SSR:
+    ./app/clientes/pa
+ge.tsx [Client 
+Component SSR]
+    ./app/clientes/pa
+ge.tsx [Server 
+Component]
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+
+./app/dashboard/layou
+t.tsx:6:1
+Module not found: 
+Can't resolve 
+'lucide-react'
+[0m [90m 4 |[39m 
+[36mimport[39m { 
+useRouter[33m,[39m 
+usePathname } 
+[36mfrom[39m [32m'
+next/navigation'[39m
+ [90m 5 |[39m 
+[36mimport[39m 
+[33mSidebar[39m 
+[36mfrom[39m [32m'
+@/components/layout/S
+idebar'[39m
+[31m[1m>[22m[39m
+[90m 6 |[39m 
+[36mimport[39m { 
+[33mLoader2[39m } 
+[36mfrom[39m [32m'
+lucide-react'[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+ [90m 7 |[39m
+ [90m 8 |[39m 
+[36minterface[39m 
+[33mUser[39m {
+ [90m 9 |[39m     
+id[33m:[39m 
+string[0m
+
+
+
+Import traces:
+  Client Component 
+Browser:
+    ./app/dashboard/l
+ayout.tsx [Client 
+Component Browser]
+    ./app/dashboard/l
+ayout.tsx [Server 
+Component]
+
+  Client Component 
+SSR:
+    ./app/dashboard/l
+ayout.tsx [Client 
+Component SSR]
+    ./app/dashboard/l
+ayout.tsx [Server 
+Component]
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+
+./app/dashboard/page.
+tsx:5:1
+Module not found: 
+Can't resolve 
+'lucide-react'
+[0m [90m 3 |[39m 
+[36mimport[39m { 
+useEffect[33m,[39m 
+useState } 
+[36mfrom[39m 
+[32m'react'[39m
+ [90m 4 |[39m 
+[36mimport[39m 
+[33mLink[39m 
+[36mfrom[39m 
+[32m'next/link'[39m
+[31m[1m>[22m[39m
+[90m 5 |[39m 
+[36mimport[39m { [
+33mUsers[39m[33m,[
+39m [33mCheckSquare
+[39m[33m,[39m [33m
+UsersRound[39m[33m,
+[39m [33mTrendingUp
+[39m[33m,[39m [33
+mArrowUpRight[39m[3
+3m,[39m [33mClock[
+39m[33m,[39m [33mA
+lertCircle[39m } 
+[36mfrom[39m [32m'
+lucide-react'[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m
+ [90m 6 |[39m 
+[36mimport[39m { 
+formatCurrency } 
+[36mfrom[39m [32m'
+@/lib/utils/formatter
+s'[39m
+ [90m 7 |[39m
+ [90m 8 |[39m 
+[36minterface[39m 
+[33mDashboardStats[3
+9m {[0m
+
+
+
+Import traces:
+  Client Component 
+Browser:
+    ./app/dashboard/p
+age.tsx [Client 
+Component Browser]
+    ./app/dashboard/p
+age.tsx [Server 
+Component]
+
+  Client Component 
+SSR:
+    ./app/dashboard/p
+age.tsx [Client 
+Component SSR]
+    ./app/dashboard/p
+age.tsx [Server 
+Component]
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+
+./app/equipes/page.ts
+x:4:1
+Module not found: 
+Can't resolve 
+'lucide-react'
+[0m [90m 2 |[39m
+ [90m 3 |[39m 
+[36mimport[39m { 
+useEffect[33m,[39m 
+useState } 
+[36mfrom[39m 
+[32m'react'[39m
+[31m[1m>[22m[39m
+[90m 4 |[39m 
+[36mimport[39m { [
+33mPlus[39m[33m,[3
+9m [33mX[39m[33m,
+[39m [33mLoader2[39
+m[33m,[39m [33mUse
+rsRound[39m[33m,[3
+9m [33mPencil[39m[
+33m,[39m [33mTrash2
+[39m[33m,[39m 
+[33mUserPlus[39m } 
+[36mfrom[39m [32m'
+lucide-react'[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m
+ [90m 5 |[39m 
+[36mimport[39m { [
+33mEquipe[39m[33m,
+[39m [33mCreateEquip
+eDTO[39m } 
+[36mfrom[39m [32m'
+@/types/equipe'[39m
+ [90m 6 |[39m 
+[36mimport[39m { 
+formatDate } 
+[36mfrom[39m [32m'
+@/lib/utils/formatter
+s'[39m
+ [90m 7 |[39m[0m
+
+
+
+Import traces:
+  Client Component 
+Browser:
+    ./app/equipes/pag
+e.tsx [Client 
+Component Browser]
+    ./app/equipes/pag
+e.tsx [Server 
+Component]
+
+  Client Component 
+SSR:
+    ./app/equipes/pag
+e.tsx [Client 
+Component SSR]
+    ./app/equipes/pag
+e.tsx [Server 
+Component]
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+
+./app/financeiro/page
+.tsx:4:1
+Module not found: 
+Can't resolve 
+'lucide-react'
+[0m [90m 2 |[39m
+ [90m 3 |[39m 
+[36mimport[39m { 
+useEffect[33m,[39m 
+useState } 
+[36mfrom[39m 
+[32m'react'[39m
+[31m[1m>[22m[39m
+[90m 4 |[39m 
+[36mimport[39m { [
+33mTrendingUp[39m[3
+3m,[39m [33mTrendin
+gDown[39m[33m,[39m
+ [33mDollarSign[39m
+[33m,[39m [33mUser
+s[39m[33m,[39m [3
+3mPlus[39m[33m,[39
+m [33mX[39m[33m,[
+39m [33mLoader2[39m
+[33m,[39m 
+[33mBarChart3[39m 
+} [36mfrom[39m [32
+m'lucide-react'[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+ [90m 5 |[39m 
+[36mimport[39m { fo
+rmatCurrency[33m,[3
+9m formatDate } 
+[36mfrom[39m [32m'
+@/lib/utils/formatter
+s'[39m
+ [90m 6 |[39m 
+[36mimport[39m { [
+33mCustoOperacional[
+39m[33m,[39m [33mC
+reateCustoDTO[39m } 
+[36mfrom[39m [32m'
+@/types/financeiro'[
+39m
+ [90m 7 |[39m[0m
+
+
+
+Import traces:
+  Client Component 
+Browser:
+    ./app/financeiro/
+page.tsx [Client 
+Component Browser]
+    ./app/financeiro/
+page.tsx [Server 
+Component]
+
+  Client Component 
+SSR:
+    ./app/financeiro/
+page.tsx [Client 
+Component SSR]
+    ./app/financeiro/
+page.tsx [Server 
+Component]
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+
+./app/login/page.tsx:
+4:1
+Module not found: 
+Can't resolve 
+'lucide-react'
+[0m [90m 2 |[39m
+ [90m 3 |[39m 
+[36mimport[39m { 
+useState } 
+[36mfrom[39m 
+[32m'react'[39m
+[31m[1m>[22m[39m
+[90m 4 |[39m 
+[36mimport[39m { [
+33mEye[39m[33m,[39
+m [33mEyeOff[39m[3
+3m,[39m 
+[33mLoader2[39m } 
+[36mfrom[39m [32m'
+lucide-react'[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m
+ [90m 5 |[39m
+ [90m 6 |[39m 
+[36mexport[39m 
+[36mdefault[39m 
+[36mfunction[39m [
+33mLoginPage[39m() {
+ [90m 7 |[39m     
+[36mconst[39m 
+[username[33m,[39m 
+setUsername] 
+[33m=[39m useState(
+[32m''[39m)[0m
+
+
+
+Import traces:
+  Client Component 
+Browser:
+    
+./app/login/page.tsx 
+[Client Component 
+Browser]
+    
+./app/login/page.tsx 
+[Server Component]
+
+  Client Component 
+SSR:
+    
+./app/login/page.tsx 
+[Client Component 
+SSR]
+    
+./app/login/page.tsx 
+[Server Component]
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+
+./app/tarefas/page.ts
+x:4:1
+Module not found: 
+Can't resolve 
+'lucide-react'
+[0m [90m 2 |[39m
+ [90m 3 |[39m 
+[36mimport[39m { 
+useEffect[33m,[39m 
+useState } 
+[36mfrom[39m 
+[32m'react'[39m
+[31m[1m>[22m[39m
+[90m 4 |[39m 
+[36mimport[39m { [
+33mPlus[39m[33m,[3
+9m [33mSearch[39m[
+33m,[39m [33mX[39m
+[33m,[39m [33mLoad
+er2[39m[33m,[39m 
+[33mCheckSquare[39m
+[33m,[39m [33mPenci
+l[39m[33m,[39m [3
+3mTrash2[39m[33m,[
+39m [33mFlag[39m } 
+[36mfrom[39m [32m'
+lucide-react'[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m
+ [90m 5 |[39m 
+[36mimport[39m { [
+33mTarefa[39m[33m,
+[39m [33mCreateTaref
+aDTO[39m[33m,[39m 
+[33mStatusTarefa[39
+m[33m,[39m [33mPri
+oridadeTarefa[39m } 
+[36mfrom[39m [32m'
+@/types/tarefa'[39m
+ [90m 6 |[39m 
+[36mimport[39m { 
+formatDate } 
+[36mfrom[39m [32m'
+@/lib/utils/formatter
+s'[39m
+ [90m 7 |[39m[0m
+
+
+
+Import traces:
+  Client Component 
+Browser:
+    ./app/tarefas/pag
+e.tsx [Client 
+Component Browser]
+    ./app/tarefas/pag
+e.tsx [Server 
+Component]
+
+  Client Component 
+SSR:
+    ./app/tarefas/pag
+e.tsx [Client 
+Component SSR]
+    ./app/tarefas/pag
+e.tsx [Server 
+Component]
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+
+./app/usuarios/page.t
+sx:4:1
+Module not found: 
+Can't resolve 
+'lucide-react'
+[0m [90m 2 |[39m
+ [90m 3 |[39m 
+[36mimport[39m { 
+useEffect[33m,[39m 
+useState } 
+[36mfrom[39m 
+[32m'react'[39m
+[31m[1m>[22m[39m
+[90m 4 |[39m 
+[36mimport[39m { [
+33mPlus[39m[33m,[3
+9m [33mTrash2[39m[
+33m,[39m [33mX[39m
+[33m,[39m [33mLoad
+er2[39m[33m,[39m 
+[33mUserCog[39m[33m
+,[39m [33mShield[3
+9m[33m,[39m 
+[33mUsers[39m } 
+[36mfrom[39m [32m'
+lucide-react'[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+ [90m 5 |[39m 
+[36mimport[39m { [
+33mCreateUsuarioDTO[
+39m[33m,[39m [33mF
+uncaoUsuario[39m } 
+[36mfrom[39m [32m'
+@/types/usuario'[39m
+ [90m 6 |[39m 
+[36mimport[39m { 
+formatDate } 
+[36mfrom[39m [32m'
+@/lib/utils/formatter
+s'[39m
+ [90m 7 |[39m[0m
+
+
+
+Import traces:
+  Client Component 
+Browser:
+    ./app/usuarios/pa
+ge.tsx [Client 
+Component Browser]
+    ./app/usuarios/pa
+ge.tsx [Server 
+Component]
+
+  Client Component 
+SSR:
+    ./app/usuarios/pa
+ge.tsx [Client 
+Component SSR]
+    ./app/usuarios/pa
+ge.tsx [Server 
+Component]
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+
+./components/layout/S
+idebar.tsx:5:1
+Module not found: 
+Can't resolve 
+'lucide-react'
+[0m [90m  3 |[39m 
+[36mimport[39m { 
+useRouter[33m,[39m 
+usePathname } 
+[36mfrom[39m [32m'
+next/navigation'[39m
+ [90m  4 |[39m 
+[36mimport[39m 
+[33mLink[39m 
+[36mfrom[39m 
+[32m'next/link'[39m
+[31m[1m>[22m[39m
+[90m  5 |[39m 
+[36mimport[39m {
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m
+[31m[1m>[22m[39m
+[90m  6 |[39m     [
+33mLayoutDashboard[3
+9m[33m,[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m  7 |[39m     [
+33mUsers[39m[33m,[
+39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m  8 |[39m     [
+33mCheckSquare[39m[
+33m,[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m  9 |[39m     [
+33mUsersRound[39m[3
+3m,[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 10 |[39m     [
+33mDollarSign[39m[3
+3m,[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 11 |[39m     [
+33mUserCog[39m[33m,
+[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 12 |[39m     [
+33mLogOut[39m[33m,
+[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 13 |[39m     [
+33mChevronRight[39m
+[33m,[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+[31m[1m>[22m[39m
+[90m 14 |[39m } 
+[36mfrom[39m [32m'
+lucide-react'[39m
+ [90m    |[39m [31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m
+[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^
+[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m
+[39m[31m[1m^[22m[
+39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39
+m[31m[1m^[22m[39m
+[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31
+m[1m^[22m[39m
+ [90m 15 |[39m
+ [90m 16 |[39m 
+[36minterface[39m 
+[33mSidebarProps[39m
+ {
+ [90m 17 |[39m     
+user[33m:[39m {[0m
+
+
+
+Import traces:
+  Client Component 
+Browser:
+    ./components/layo
+ut/Sidebar.tsx 
+[Client Component 
+Browser]
+    ./app/dashboard/l
+ayout.tsx [Client 
+Component Browser]
+    ./app/dashboard/l
+ayout.tsx [Server 
+Component]
+
+  Client Component 
+SSR:
+    ./components/layo
+ut/Sidebar.tsx 
+[Client Component 
+SSR]
+    ./app/dashboard/l
+ayout.tsx [Client 
+Component SSR]
+    ./app/dashboard/l
+ayout.tsx [Server 
+Component]
+
+https://nextjs.org/do
+cs/messages/module-no
+t-found
+
+
+    at <unknown> (./a
+pp/clientes/page.tsx:
+4:1)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+messages/module-not-f
+ound)
+    at <unknown> (./a
+pp/dashboard/layout.t
+sx:6:1)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+messages/module-not-f
+ound)
+    at <unknown> (./a
+pp/dashboard/page.tsx
+:5:1)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+messages/module-not-f
+ound)
+    at <unknown> (./a
+pp/equipes/page.tsx:4
+:1)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+messages/module-not-f
+ound)
+    at <unknown> (./a
+pp/financeiro/page.ts
+x:4:1)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+messages/module-not-f
+ound)
+    at <unknown> (./a
+pp/login/page.tsx:4:1
+)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+messages/module-not-f
+ound)
+    at <unknown> (./a
+pp/tarefas/page.tsx:4
+:1)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+messages/module-not-f
+ound)
+    at <unknown> (./a
+pp/usuarios/page.tsx:
+4:1)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+messages/module-not-f
+ound)
+    at <unknown> (./c
+omponents/layout/Side
+bar.tsx:5:1)
+    at <unknown> (htt
+ps://nextjs.org/docs/
+messages/module-not-f
+ound)
