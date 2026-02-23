@@ -2,22 +2,24 @@ import { NextRequest, NextResponse } from 'next/server'
 import store, { now, uuid } from '@/lib/db/store'
 import { verifyToken } from '@/lib/auth/jwt'
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const token = request.cookies.get('auth_token')?.value
     const user = token ? verifyToken(token) : null
     if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
 
-    const cliente = store.clientes.find((c) => c.id === params.id)
+    const { id } = await params
+    const cliente = store.clientes.find((c) => c.id === id)
     if (!cliente) return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 })
     return NextResponse.json(cliente)
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const token = request.cookies.get('auth_token')?.value
     const user = token ? verifyToken(token) : null
     if (!user || !user.is_admin_matriz) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
 
-    const idx = store.clientes.findIndex((c) => c.id === params.id)
+    const { id } = await params
+    const idx = store.clientes.findIndex((c) => c.id === id)
     if (idx === -1) return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 })
 
     const body = await request.json()
@@ -46,12 +48,13 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     return NextResponse.json(store.clientes[idx])
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const token = request.cookies.get('auth_token')?.value
     const user = token ? verifyToken(token) : null
     if (!user || !user.is_admin_matriz) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
 
-    const idx = store.clientes.findIndex((c) => c.id === params.id)
+    const { id } = await params
+    const idx = store.clientes.findIndex((c) => c.id === id)
     if (idx === -1) return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 })
     store.clientes.splice(idx, 1)
     return NextResponse.json({ success: true })

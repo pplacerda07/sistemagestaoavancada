@@ -73,12 +73,13 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json(enrichTarefa(store.tarefas[idx]))
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const token = request.cookies.get('auth_token')?.value
     const user = token ? verifyToken(token) : null
     if (!user || !user.is_admin_matriz) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
 
-    const idx = store.tarefas.findIndex((t) => t.id === params.id)
+    const { id } = await params
+    const idx = store.tarefas.findIndex((t) => t.id === id)
     if (idx === -1) return NextResponse.json({ error: 'Tarefa não encontrada' }, { status: 404 })
     store.tarefas.splice(idx, 1)
     return NextResponse.json({ success: true })

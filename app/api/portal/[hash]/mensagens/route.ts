@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import store, { uuid, now } from '@/lib/db/store'
 
-export async function POST(req: NextRequest, { params }: { params: { hash: string } }) {
-    const hash = params.hash
+export async function POST(req: NextRequest, { params }: { params: Promise<{ hash: string }> }) {
+    const { hash } = await params
 
     const cliente = store.clientes.find(c => c.portal_hash === hash && c.portal_ativo)
 
