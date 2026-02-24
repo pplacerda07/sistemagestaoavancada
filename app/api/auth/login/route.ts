@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-import store from '@/lib/db/store'
+import { createServerSupabase } from '@/lib/supabase/server'
 import { signToken } from '@/lib/auth/jwt'
 
 export async function POST(request: NextRequest) {
@@ -11,8 +11,14 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Usuário e senha são obrigatórios' }, { status: 400 })
         }
 
-        const user = store.usuarios.find((u) => u.username === username)
-        if (!user) {
+        const supabase = createServerSupabase()
+        const { data: user, error } = await supabase
+            .from('usuarios')
+            .select('*')
+            .eq('username', username)
+            .single()
+
+        if (error || !user) {
             return NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 })
         }
 
