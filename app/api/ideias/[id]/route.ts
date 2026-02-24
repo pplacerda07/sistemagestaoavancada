@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import store from '@/lib/db/store'
 import { verifyToken } from '@/lib/auth/jwt'
+import { createServerSupabase } from '@/lib/supabase/server'
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const token = req.cookies.get('auth_token')?.value
@@ -8,22 +8,24 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
 
     const { id } = await params
-    const idx = store.ideias.findIndex(i => i.id === id)
-    if (idx === -1) return NextResponse.json({ error: 'Ideia não encontrada' }, { status: 404 })
+    const supabase = createServerSupabase()
 
-    const ideia = store.ideias[idx]
+    const { data: ideia } = await supabase.from('ideias').select('*').eq('id', id).single()
+    if (!ideia) return NextResponse.json({ error: 'Ideia não encontrada' }, { status: 404 })
+
     if (ideia.usuario_id !== user.id) {
         return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
     }
 
     const { status, texto } = await req.json()
-    store.ideias[idx] = {
-        ...ideia,
-        status: status || ideia.status,
-        texto: texto !== undefined ? texto : ideia.texto
-    }
+    const updates: any = {}
+    if (status) updates.status = status
+    if (texto !== undefined) updates.texto = texto
 
-    return NextResponse.json(store.ideias[idx])
+    const { data: updated, error } = await supabase.from('ideias').update(updates).eq('id', id).select('*').single()
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+    return NextResponse.json(updated)
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -32,13 +34,17 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
 
     const { id } = await params
-    const idx = store.ideias.findIndex(i => i.id === id)
-    if (idx === -1) return NextResponse.json({ error: 'Ideia não encontrada' }, { status: 404 })
+    const supabase = createServerSupabase()
 
-    if (store.ideias[idx].usuario_id !== user.id) {
+    const { data: ideia } = await supabase.from('ideias').select('*').eq('id', id).single()
+    if (!ideia) return NextResponse.json({ error: 'Ideia não encontrada' }, { status: 404 })
+
+    if (ideia.usuario_id !== user.id) {
         return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
     }
 
-    store.ideias.splice(idx, 1)
+    const { error } = await supabase.from('ideias').delete().eq('id', id)
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
     return NextResponse.json({ success: true })
 }

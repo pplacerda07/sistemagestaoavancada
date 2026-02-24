@@ -1,39 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server'
-import store, { uuid, now } from '@/lib/db/store'
 import { verifyToken } from '@/lib/auth/jwt'
-
-function getUser(req: NextRequest) {
-    const token = req.cookies.get('auth_token')?.value
-    if (!token) return null
-    try { return verifyToken(token) } catch { return null }
-}
+import { createServerSupabase } from '@/lib/supabase/server'
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const user = getUser(req)
+    const token = req.cookies.get('auth_token')?.value
+    const user = token ? verifyToken(token) : null
     if (!user || !user.is_admin_matriz) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
     const { id } = await params
-    return NextResponse.json(store.senhas.filter(s => s.cliente_id === id))
+    const supabase = createServerSupabase()
+    const { data } = await supabase.from('senhas_cliente').select('*').eq('cliente_id', id).order('created_at', { ascending: false })
+    return NextResponse.json(data || [])
 }
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const user = getUser(req)
+    const token = req.cookies.get('auth_token')?.value
+    const user = token ? verifyToken(token) : null
     if (!user || !user.is_admin_matriz) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
     const { id } = await params
     const { titulo, login, senha, url: urlField, notas } = await req.json()
-    const nova = { id: uuid(), cliente_id: id, titulo, login: login || '', senha: senha || '', url: urlField || null, notas: notas || null, created_at: now() }
-    store.senhas.push(nova)
+    const supabase = createServerSupabase()
+
+    const nova_senha = {
+        cliente_id: id,
+        titulo,
+        login: login || '',
+        senha: senha || '',
+        url: urlField || null,
+        notas: notas || null
+    }
+
+    const { data: nova, error } = await supabase.from('senhas_cliente').insert([nova_senha]).select().single()
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
     return NextResponse.json(nova, { status: 201 })
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const user = getUser(req)
+    const token = req.cookies.get('auth_token')?.value
+    const user = token ? verifyToken(token) : null
     if (!user || !user.is_admin_matriz) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
     const { id } = await params
     const url = new URL(req.url)
     const senhaId = url.searchParams.get('senha_id')
+
     if (senhaId) {
-        const idx = store.senhas.findIndex(s => s.id === senhaId && s.cliente_id === id)
-        if (idx !== -1) store.senhas.splice(idx, 1)
+        const supabase = createServerSupabase()
+        const { error } = await supabase.from('senhas_cliente').delete().eq('id', senhaId).eq('cliente_id', id)
+        if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     }
     return NextResponse.json({ ok: true })
 }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import store, { uuid, now } from '@/lib/db/store'
 import { verifyToken } from '@/lib/auth/jwt'
+import { createServerSupabase } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
     const token = request.cookies.get('auth_token')?.value
@@ -10,8 +10,25 @@ export async function POST(request: NextRequest) {
     const { equipe_id, usuario_id, funcao } = await request.json()
     if (!equipe_id || !usuario_id) return NextResponse.json({ error: 'Dados obrigatórios faltando' }, { status: 400 })
 
-    const usr = store.usuarios.find(u => u.id === usuario_id)
-    const membro = { id: uuid(), equipe_id, usuario_id, funcao: funcao || usr?.funcao || null, created_at: now() }
-    store.membros_equipe.push(membro)
-    return NextResponse.json({ ...membro, usuario: usr ? { id: usr.id, nome: usr.nome, funcao: usr.funcao } : null }, { status: 201 })
+    const supabase = createServerSupabase()
+
+    const { data: usr } = await supabase.from('usuarios').select('id, nome, funcao').eq('id', usuario_id).single()
+
+    const novoMembro = {
+        equipe_id,
+        usuario_id,
+        funcao: funcao || usr?.funcao || null
+    }
+
+    const { data: membro, error } = await supabase.from('membros_equipe').insert([novoMembro]).select(`
+        id, equipe_id, usuario_id, funcao, created_at,
+        usuario:usuarios!membros_equipe_usuario_id_fkey(id, nome, funcao)
+    `).single()
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+    return NextResponse.json({
+        ...membro,
+        usuario: Array.isArray(membro.usuario) ? membro.usuario[0] : membro.usuario
+    }, { status: 201 })
 }

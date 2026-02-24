@@ -1,15 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import store from '@/lib/db/store'
+import { createServerSupabase } from '@/lib/supabase/server'
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ hash: string, arquivo_id: string }> }) {
     const { hash, arquivo_id } = await params
+    const supabase = createServerSupabase()
 
-    const cliente = store.clientes.find(c => c.portal_hash === hash && c.portal_ativo)
+    const { data: cliente } = await supabase.from('clientes').select('id').eq('portal_hash', hash).eq('portal_ativo', true).single()
     if (!cliente) {
         return NextResponse.json({ error: 'Portal não encontrado ou inativo.' }, { status: 404 })
     }
 
-    const arquivo = store.arquivos.find(a => a.id === arquivo_id && a.cliente_id === cliente.id && a.visivel_portal)
+    const { data: arquivo } = await supabase.from('anexos_cliente').select('*').eq('id', arquivo_id).eq('cliente_id', cliente.id).eq('visivel_portal', true).single()
+
     if (!arquivo || !arquivo.dados_base64) {
         return NextResponse.json({ error: 'Arquivo não encontrado.' }, { status: 404 })
     }
@@ -24,8 +26,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ hash
 
     return new NextResponse(buffer, {
         headers: {
-            'Content-Type': arquivo.tipo || 'application/octet-stream',
-            'Content-Disposition': `attachment; filename="${encodeURIComponent(arquivo.nome)}"`
+            'Content-Type': arquivo.tipo_conteudo || 'application/octet-stream',
+            'Content-Disposition': `attachment; filename="${encodeURIComponent(arquivo.nome_arquivo)}"`
         }
     })
 }

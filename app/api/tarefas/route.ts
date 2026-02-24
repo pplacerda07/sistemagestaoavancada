@@ -1,29 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server'
-import store, { uuid, now } from '@/lib/db/store'
 import { verifyToken } from '@/lib/auth/jwt'
-
-function enrichTarefa(t: any) {
-    const cliente = t.cliente_id ? store.clientes.find(c => c.id === t.cliente_id) : null
-    const usuario = t.usuario_id ? store.usuarios.find(u => u.id === t.usuario_id) : null
-    return {
-        ...t,
-        cliente: cliente ? { id: cliente.id, nome: cliente.nome } : null,
-        usuario: usuario ? { id: usuario.id, nome: usuario.nome } : null,
-    }
-}
+import { createServerSupabase } from '@/lib/supabase/server'
 
 export async function GET(request: NextRequest) {
     const token = request.cookies.get('auth_token')?.value
     const user = token ? verifyToken(token) : null
     if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
 
-    let tarefas = [...store.tarefas].sort((a, b) => b.created_at.localeCompare(a.created_at))
+    const supabase = createServerSupabase()
+
+    let query = supabase.from('tarefas').select(`
+        *,
+        cliente:clientes(id, nome),
+        usuario:usuarios(id, nome)
+    `).order('created_at', { ascending: false })
 
     if (!user.is_admin_matriz) {
-        tarefas = tarefas.filter((t) => t.usuario_id === user.id)
+        query = query.eq('usuario_id', user.id)
     }
 
-    return NextResponse.json(tarefas.map(enrichTarefa))
+    const { data: tarefas, error } = await query
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+    // If an object is an array just take the first item, Supabase might return array for 1:N but we know it's N:1
+    const enriched = (tarefas || []).map(t => ({
+        ...t,
+        cliente: Array.isArray(t.cliente) ? t.cliente[0] : t.cliente,
+        usuario: Array.isArray(t.usuario) ? t.usuario[0] : t.usuario
+    }))
+
+    return NextResponse.json(enriched)
 }
 
 export async function POST(request: NextRequest) {
@@ -32,8 +39,9 @@ export async function POST(request: NextRequest) {
     if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
 
     const body = await request.json()
-    const nova: any = {
-        id: uuid(),
+    const supabase = createServerSupabase()
+
+    const novaTarefa = {
         titulo: body.titulo,
         descricao: body.descricao || null,
         cliente_id: body.cliente_id || null,
@@ -41,9 +49,22 @@ export async function POST(request: NextRequest) {
         status: body.status || 'a_fazer',
         prioridade: body.prioridade || 'media',
         prazo: body.prazo || null,
-        created_at: now(),
         visivel_portal: body.visivel_portal || false,
     }
-    store.tarefas.push(nova)
-    return NextResponse.json(enrichTarefa(nova), { status: 201 })
+
+    const { data: inserted, error } = await supabase.from('tarefas').insert([novaTarefa]).select(`
+        *,
+        cliente:clientes(id, nome),
+        usuario:usuarios(id, nome)
+    `).single()
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+    const enriched = {
+        ...inserted,
+        cliente: Array.isArray(inserted.cliente) ? inserted.cliente[0] : inserted.cliente,
+        usuario: Array.isArray(inserted.usuario) ? inserted.usuario[0] : inserted.usuario
+    }
+
+    return NextResponse.json(enriched, { status: 201 })
 }

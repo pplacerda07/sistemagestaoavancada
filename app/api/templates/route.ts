@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/lib/auth/jwt'
-import store, { uuid, now } from '@/lib/db/store'
+import { createServerSupabase } from '@/lib/supabase/server'
 
 function getUser(req: NextRequest) {
     const token = req.cookies.get('auth_token')?.value
@@ -11,11 +11,14 @@ function getUser(req: NextRequest) {
 export async function GET(req: NextRequest) {
     const user = getUser(req)
     if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-    const templates = store.templates.map(t => ({
-        ...t,
-        tarefas: store.templates_tarefas.filter(tt => tt.template_id === t.id),
-    }))
-    return NextResponse.json(templates)
+
+    const supabase = createServerSupabase()
+    const { data: templates } = await supabase.from('templates').select(`
+        *,
+        tarefas:templates_tarefas(*)
+    `).order('created_at', { ascending: false })
+
+    return NextResponse.json(templates || [])
 }
 
 export async function POST(req: NextRequest) {
@@ -24,24 +27,30 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     if (!body.nome?.trim()) return NextResponse.json({ error: 'Nome obrigatório' }, { status: 400 })
 
-    const template = {
-        id: 'tpl-' + uuid(),
+    const supabase = createServerSupabase()
+
+    const novoTemplate = {
         nome: body.nome.trim(),
-        descricao: body.descricao || null,
-        created_at: now(),
+        descricao: body.descricao || null
     }
-    store.templates.push(template)
+
+    const { data: template, error: tmplError } = await supabase.from('templates').insert([novoTemplate]).select('*').single()
+
+    if (tmplError || !template) return NextResponse.json({ error: tmplError?.message }, { status: 500 })
 
     // Create sub-tasks
-    const tarefas = (body.tarefas || []).map((t: any, i: number) => ({
-        id: 'ttf-' + uuid(),
-        template_id: template.id,
-        titulo: t.titulo?.trim() || `Tarefa ${i + 1}`,
-        descricao: t.descricao || null,
-        prazo_dias: parseInt(t.prazo_dias) || 7,
-        prioridade: t.prioridade || 'media',
-    }))
-    store.templates_tarefas.push(...tarefas)
+    let tarefas: any[] = []
+    if (body.tarefas && body.tarefas.length > 0) {
+        const payload = body.tarefas.map((t: any, i: number) => ({
+            template_id: template.id,
+            titulo: t.titulo?.trim() || `Tarefa ${i + 1}`,
+            descricao: t.descricao || null,
+            prazo_dias: parseInt(t.prazo_dias) || 7,
+            prioridade: t.prioridade || 'media',
+        }))
+        const { data: insertTarefas } = await supabase.from('templates_tarefas').insert(payload).select('*')
+        if (insertTarefas) tarefas = insertTarefas
+    }
 
     return NextResponse.json({ ...template, tarefas }, { status: 201 })
 }

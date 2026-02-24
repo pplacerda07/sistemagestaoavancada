@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import store, { now, uuid } from '@/lib/db/store'
 import { verifyToken } from '@/lib/auth/jwt'
+import { createServerSupabase } from '@/lib/supabase/server'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const token = request.cookies.get('auth_token')?.value
@@ -8,7 +8,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
 
     const { id } = await params
-    const cliente = store.clientes.find((c) => c.id === id)
+    const supabase = createServerSupabase()
+    const { data: cliente } = await supabase.from('clientes').select('*').eq('id', id).single()
+
     if (!cliente) return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 })
     return NextResponse.json(cliente)
 }
@@ -19,33 +21,39 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     if (!user || !user.is_admin_matriz) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
 
     const { id } = await params
-    const idx = store.clientes.findIndex((c) => c.id === id)
-    if (idx === -1) return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 })
-
     const body = await request.json()
+    const supabase = createServerSupabase()
 
-    let portal_hash = store.clientes[idx].portal_hash
-    const portal_ativo = body.portal_ativo ?? store.clientes[idx].portal_ativo
-    // Automatically generate a hash if the portal is activated for the first time
+    const { data: existing } = await supabase.from('clientes').select('portal_hash, portal_ativo').eq('id', id).single()
+    if (!existing) return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 })
+
+    let portal_hash = existing.portal_hash
+    const portal_ativo = body.portal_ativo ?? existing.portal_ativo
+
     if (portal_ativo && !portal_hash) {
-        portal_hash = uuid()
+        portal_hash = crypto.randomUUID()
     }
 
-    store.clientes[idx] = {
-        ...store.clientes[idx],
-        nome: body.nome ?? store.clientes[idx].nome,
-        email: body.email ?? store.clientes[idx].email,
-        telefone: body.telefone ?? store.clientes[idx].telefone,
-        servico: body.servico ?? store.clientes[idx].servico,
-        valor_mensal: body.valor_mensal !== undefined ? Number(body.valor_mensal) : store.clientes[idx].valor_mensal,
-        tipo_contrato: body.tipo_contrato ?? store.clientes[idx].tipo_contrato,
-        data_inicio: body.data_inicio ?? store.clientes[idx].data_inicio,
-        status: body.status ?? store.clientes[idx].status,
-        observacoes: body.observacoes ?? store.clientes[idx].observacoes,
-        portal_ativo,
-        portal_hash,
-    }
-    return NextResponse.json(store.clientes[idx])
+    const updateData: any = {}
+    if (body.nome !== undefined) updateData.nome = body.nome
+    if (body.email !== undefined) updateData.email = body.email
+    if (body.telefone !== undefined) updateData.telefone = body.telefone
+    if (body.servico !== undefined) updateData.servico = body.servico
+    if (body.valor_mensal !== undefined) updateData.valor_mensal = body.valor_mensal !== null ? Number(body.valor_mensal) : null
+    if (body.tipo_contrato !== undefined) updateData.tipo_contrato = body.tipo_contrato
+    if (body.data_inicio !== undefined) updateData.data_inicio = body.data_inicio
+    if (body.status !== undefined) updateData.status = body.status
+    if (body.observacoes !== undefined) updateData.observacoes = body.observacoes
+    if (body.horas_semanais_planejadas !== undefined) updateData.horas_semanais_planejadas = body.horas_semanais_planejadas !== null ? Number(body.horas_semanais_planejadas) : null
+
+    updateData.portal_ativo = portal_ativo
+    updateData.portal_hash = portal_hash
+    updateData.updated_at = new Date().toISOString()
+
+    const { data: updated, error } = await supabase.from('clientes').update(updateData).eq('id', id).select().single()
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+    return NextResponse.json(updated)
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -54,8 +62,9 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     if (!user || !user.is_admin_matriz) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 })
 
     const { id } = await params
-    const idx = store.clientes.findIndex((c) => c.id === id)
-    if (idx === -1) return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 })
-    store.clientes.splice(idx, 1)
+    const supabase = createServerSupabase()
+
+    const { error } = await supabase.from('clientes').delete().eq('id', id)
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json({ success: true })
 }
