@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/lib/auth/jwt'
-import store from '@/lib/db/store'
+import { createServerSupabase } from '@/lib/supabase/server'
 
 export async function GET(request: NextRequest) {
     const token = request.cookies.get('auth_token')?.value
@@ -9,9 +9,14 @@ export async function GET(request: NextRequest) {
     const payload = verifyToken(token)
     if (!payload) return NextResponse.json({ user: null }, { status: 401 })
 
-    // Return fresh user data from store (in case it was updated)
-    const dbUser = store.usuarios.find(u => u.id === payload.id)
-    if (!dbUser) return NextResponse.json({ user: null }, { status: 401 })
+    const supabase = createServerSupabase()
+    const { data: dbUser, error } = await supabase
+        .from('usuarios')
+        .select('*')
+        .eq('id', payload.id)
+        .single()
+
+    if (error || !dbUser) return NextResponse.json({ user: null }, { status: 401 })
 
     return NextResponse.json({
         user: {
