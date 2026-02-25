@@ -7,6 +7,7 @@ export interface Tarefa {
     descricao: string | null
     cliente_id: string | null
     usuario_id: string | null
+    equipe_id: string | null
     status: StatusTarefa
     prioridade: PrioridadeTarefa
     prazo: string | null
@@ -16,6 +17,7 @@ export interface Tarefa {
     // Joined fields
     cliente?: { id: string; nome: string }
     usuario?: { id: string; nome: string }
+    equipe?: { id: string; nome: string }
 }
 
 export interface CreateTarefaDTO {
@@ -23,6 +25,7 @@ export interface CreateTarefaDTO {
     descricao?: string
     cliente_id?: string
     usuario_id?: string
+    equipe_id?: string
     status: StatusTarefa
     prioridade: PrioridadeTarefa
     prazo?: string

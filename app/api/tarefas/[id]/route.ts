@@ -26,6 +26,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     if (body.descricao !== undefined) updateData.descricao = body.descricao || null
     if (body.cliente_id !== undefined) updateData.cliente_id = body.cliente_id || null
     if (body.usuario_id !== undefined) updateData.usuario_id = body.usuario_id || null
+    if (body.equipe_id !== undefined) updateData.equipe_id = body.equipe_id || null
     if (body.status !== undefined) updateData.status = body.status
     if (body.prioridade !== undefined) updateData.prioridade = body.prioridade
     if (body.prazo !== undefined) updateData.prazo = body.prazo || null
@@ -35,7 +36,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const { data: updatedTarefa, error: updateError } = await supabase.from('tarefas').update(updateData).eq('id', id).select(`
         *,
         cliente:clientes(id, nome),
-        usuario:usuarios(id, nome)
+        usuario:usuarios(id, nome),
+        equipe:equipes(id, nome)
     `).single()
 
     if (updateError) return NextResponse.json({ error: updateError.message }, { status: 500 })
@@ -54,6 +56,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             descricao: updatedTarefa.descricao,
             cliente_id: updatedTarefa.cliente_id,
             usuario_id: updatedTarefa.usuario_id,
+            equipe_id: updatedTarefa.equipe_id,
             status: 'a_fazer' as const,
             prioridade: updatedTarefa.prioridade,
             prazo: novaData.toISOString().split('T')[0],
@@ -67,7 +70,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const enriched = {
         ...updatedTarefa,
         cliente: Array.isArray(updatedTarefa.cliente) ? updatedTarefa.cliente[0] : updatedTarefa.cliente,
-        usuario: Array.isArray(updatedTarefa.usuario) ? updatedTarefa.usuario[0] : updatedTarefa.usuario
+        usuario: Array.isArray(updatedTarefa.usuario) ? updatedTarefa.usuario[0] : updatedTarefa.usuario,
+        equipe: Array.isArray(updatedTarefa.equipe) ? updatedTarefa.equipe[0] : updatedTarefa.equipe
     }
 
     return NextResponse.json(enriched)

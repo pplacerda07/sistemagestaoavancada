@@ -16,11 +16,13 @@ const PRIO_COLORS: Record<Prioridade, string> = { alta: '#ef4444', media: '#f59e
 const PRIO_BG: Record<Prioridade, string> = { alta: '#fee2e2', media: '#fef3c7', baixa: '#d1fae5' }
 const PRIO_LABEL: Record<Prioridade, string> = { alta: 'Alta', media: 'Média', baixa: 'Baixa' }
 
-const emptyForm = { titulo: '', descricao: '', prioridade: 'media' as Prioridade, prazo: '', cliente_id: '', status: 'a_fazer' as StatusTarefa, recorrencia: 'nenhuma', visivel_portal: false }
+const emptyForm = { titulo: '', descricao: '', prioridade: 'media' as Prioridade, prazo: '', cliente_id: '', equipe_id: '', usuario_id: '', status: 'a_fazer' as StatusTarefa, recorrencia: 'nenhuma', visivel_portal: false }
 
 export default function TarefasPage() {
     const [tarefas, setTarefas] = useState<any[]>([])
     const [clientes, setClientes] = useState<any[]>([])
+    const [equipes, setEquipes] = useState<any[]>([])
+    const [usuarios, setUsuarios] = useState<any[]>([])
     const [user, setUser] = useState<any>(null)
     const [loading, setLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
@@ -34,6 +36,8 @@ export default function TarefasPage() {
         fetch('/api/auth/me').then(r => r.json()).then(d => setUser(d.user))
         load()
         fetch('/api/clientes').then(r => r.json()).then(d => setClientes(Array.isArray(d) ? d : []))
+        fetch('/api/equipes').then(r => r.json()).then(d => setEquipes(Array.isArray(d) ? d : []))
+        fetch('/api/usuarios').then(r => r.json()).then(d => setUsuarios(Array.isArray(d) ? d : []))
     }, [])
 
     const load = () => {
@@ -48,7 +52,7 @@ export default function TarefasPage() {
     }
     const openEdit = (t: any) => {
         setEditing(t)
-        setForm({ titulo: t.titulo, descricao: t.descricao || '', prioridade: t.prioridade, prazo: t.prazo || '', cliente_id: t.cliente_id || '', status: t.status, recorrencia: t.recorrencia || 'nenhuma', visivel_portal: t.visivel_portal || false })
+        setForm({ titulo: t.titulo, descricao: t.descricao || '', prioridade: t.prioridade, prazo: t.prazo || '', cliente_id: t.cliente_id || '', equipe_id: t.equipe_id || '', usuario_id: t.usuario_id || '', status: t.status, recorrencia: t.recorrencia || 'nenhuma', visivel_portal: t.visivel_portal || false })
         setShowModal(true)
     }
     const handleSubmit = async (e: React.FormEvent) => {
@@ -206,6 +210,17 @@ export default function TarefasPage() {
                                                     </div>
                                                 )}
 
+                                                {(t.equipe?.nome || t.usuario?.nome) && (
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginBottom: '0.625rem' }}>
+                                                        <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: 'var(--bg-tertiary)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                            <span style={{ fontSize: '0.5rem' }}>👥</span>
+                                                        </div>
+                                                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                                                            {t.usuario?.nome ? `${t.usuario.nome}${t.equipe?.nome ? ` (${t.equipe.nome})` : ''}` : `Toda a Equipe: ${t.equipe?.nome}`}
+                                                        </span>
+                                                    </div>
+                                                )}
+
                                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                                     <span style={{ fontSize: '0.7rem', fontWeight: 700, color: PRIO_COLORS[t.prioridade as Prioridade], background: PRIO_BG[t.prioridade as Prioridade], padding: '0.15rem 0.5rem', borderRadius: '999px' }}>
                                                         {PRIO_LABEL[t.prioridade as Prioridade]}
@@ -270,6 +285,34 @@ export default function TarefasPage() {
                                     <select className="form-input" value={form.cliente_id} onChange={e => setForm(f => ({ ...f, cliente_id: e.target.value }))}>
                                         <option value="">Sem cliente</option>
                                         {clientes.map(c => <option key={c.id} value={c.id}>{c.nome}</option>)}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="form-label">Equipe</label>
+                                    <select className="form-input" value={form.equipe_id} onChange={e => {
+                                        const eq = e.target.value
+                                        setForm(f => ({ ...f, equipe_id: eq, usuario_id: '' }))
+                                    }}>
+                                        <option value="">Sem equipe</option>
+                                        {equipes.map(eq => <option key={eq.id} value={eq.id}>{eq.nome}</option>)}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="form-label">Responsável</label>
+                                    <select className="form-input" value={form.usuario_id} onChange={e => setForm(f => ({ ...f, usuario_id: e.target.value }))}>
+                                        {form.equipe_id ? (
+                                            <>
+                                                <option value="">Toda a Equipe</option>
+                                                {equipes.find(eq => eq.id === form.equipe_id)?.membros?.map((m: any) => (
+                                                    <option key={m.usuario_id} value={m.usuario_id}>{m.usuario?.nome}</option>
+                                                ))}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <option value="">Sem Responsável</option>
+                                                {usuarios.map(u => <option key={u.id} value={u.id}>{u.nome}</option>)}
+                                            </>
+                                        )}
                                     </select>
                                 </div>
                                 <div style={{ gridColumn: '1 / -1' }}>

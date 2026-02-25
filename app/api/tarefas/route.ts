@@ -12,11 +12,19 @@ export async function GET(request: NextRequest) {
     let query = supabase.from('tarefas').select(`
         *,
         cliente:clientes(id, nome),
-        usuario:usuarios(id, nome)
+        usuario:usuarios(id, nome),
+        equipe:equipes(id, nome)
     `).order('created_at', { ascending: false })
 
     if (!user.is_admin_matriz) {
-        query = query.eq('usuario_id', user.id)
+        const { data: userEquipes } = await supabase.from('membros_equipe').select('equipe_id').eq('usuario_id', user.id)
+        const equipeIds = (userEquipes || []).map(e => e.equipe_id)
+
+        let orQuery = `usuario_id.eq.${user.id}`
+        if (equipeIds.length > 0) {
+            orQuery += `,equipe_id.in.(${equipeIds.join(',')})`
+        }
+        query = query.or(orQuery)
     }
 
     const { data: tarefas, error } = await query
@@ -27,7 +35,8 @@ export async function GET(request: NextRequest) {
     const enriched = (tarefas || []).map(t => ({
         ...t,
         cliente: Array.isArray(t.cliente) ? t.cliente[0] : t.cliente,
-        usuario: Array.isArray(t.usuario) ? t.usuario[0] : t.usuario
+        usuario: Array.isArray(t.usuario) ? t.usuario[0] : t.usuario,
+        equipe: Array.isArray(t.equipe) ? t.equipe[0] : t.equipe
     }))
 
     return NextResponse.json(enriched)
@@ -46,6 +55,7 @@ export async function POST(request: NextRequest) {
         descricao: body.descricao || null,
         cliente_id: body.cliente_id || null,
         usuario_id: body.usuario_id || null,
+        equipe_id: body.equipe_id || null,
         status: body.status || 'a_fazer',
         prioridade: body.prioridade || 'media',
         prazo: body.prazo || null,
@@ -55,7 +65,8 @@ export async function POST(request: NextRequest) {
     const { data: inserted, error } = await supabase.from('tarefas').insert([novaTarefa]).select(`
         *,
         cliente:clientes(id, nome),
-        usuario:usuarios(id, nome)
+        usuario:usuarios(id, nome),
+        equipe:equipes(id, nome)
     `).single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -63,7 +74,8 @@ export async function POST(request: NextRequest) {
     const enriched = {
         ...inserted,
         cliente: Array.isArray(inserted.cliente) ? inserted.cliente[0] : inserted.cliente,
-        usuario: Array.isArray(inserted.usuario) ? inserted.usuario[0] : inserted.usuario
+        usuario: Array.isArray(inserted.usuario) ? inserted.usuario[0] : inserted.usuario,
+        equipe: Array.isArray(inserted.equipe) ? inserted.equipe[0] : inserted.equipe
     }
 
     return NextResponse.json(enriched, { status: 201 })
