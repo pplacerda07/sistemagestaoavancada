@@ -23,12 +23,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     const updateData: any = {}
     if (body.titulo !== undefined) updateData.titulo = body.titulo
-    if (body.descricao !== undefined) updateData.descricao = body.descricao
-    if (body.cliente_id !== undefined) updateData.cliente_id = body.cliente_id
-    if (body.usuario_id !== undefined) updateData.usuario_id = body.usuario_id
+    if (body.descricao !== undefined) updateData.descricao = body.descricao || null
+    if (body.cliente_id !== undefined) updateData.cliente_id = body.cliente_id || null
+    if (body.usuario_id !== undefined) updateData.usuario_id = body.usuario_id || null
     if (body.status !== undefined) updateData.status = body.status
     if (body.prioridade !== undefined) updateData.prioridade = body.prioridade
-    if (body.prazo !== undefined) updateData.prazo = body.prazo
+    if (body.prazo !== undefined) updateData.prazo = body.prazo || null
     if (body.recorrencia !== undefined) updateData.recorrencia = body.recorrencia
     if (body.visivel_portal !== undefined) updateData.visivel_portal = body.visivel_portal
 

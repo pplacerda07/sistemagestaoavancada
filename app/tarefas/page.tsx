@@ -77,12 +77,14 @@ export default function TarefasPage() {
     const handleDragStart = (e: React.DragEvent, id: string) => {
         setDraggedId(id)
         e.dataTransfer.effectAllowed = 'move'
+        e.dataTransfer.setData('text/plain', id)
     }
     const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move' }
     const handleDrop = (e: React.DragEvent, status: StatusTarefa) => {
         e.preventDefault()
-        if (draggedId && draggedId !== status) {
-            moveStatus(draggedId, status)
+        const taskId = e.dataTransfer.getData('text/plain') || draggedId
+        if (taskId && taskId !== status) {
+            moveStatus(taskId, status)
         }
         setDraggedId(null)
     }
