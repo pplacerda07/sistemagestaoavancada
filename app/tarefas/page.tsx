@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Plus, X, Loader2, CheckSquare, AlertTriangle, Clock, RefreshCw } from 'lucide-react'
+import { Plus, X, Loader2, CheckSquare, AlertTriangle, Clock, RefreshCw, LayoutGrid, List } from 'lucide-react'
 
 type StatusTarefa = 'a_fazer' | 'em_andamento' | 'concluida'
 type Prioridade = 'alta' | 'media' | 'baixa'
@@ -31,13 +31,27 @@ export default function TarefasPage() {
     const [form, setForm] = useState({ ...emptyForm })
     const [saving, setSaving] = useState(false)
     const [filterPrio, setFilterPrio] = useState<string>('all')
-
+    const [viewMode, setViewMode] = useState<'kanban' | 'list'>('kanban')
+    const [now, setNow] = useState(Date.now())
     useEffect(() => {
         fetch('/api/auth/me').then(r => r.json()).then(d => setUser(d.user))
         load()
         fetch('/api/clientes').then(r => r.json()).then(d => setClientes(Array.isArray(d) ? d : []))
         fetch('/api/equipes').then(r => r.json()).then(d => setEquipes(Array.isArray(d) ? d : []))
         fetch('/api/usuarios').then(r => r.json()).then(d => setUsuarios(Array.isArray(d) ? d : []))
+
+        const handleResize = () => {
+            if (window.innerWidth < 768) setViewMode('list')
+        }
+        window.addEventListener('resize', handleResize)
+        handleResize()
+
+        // Update 'now' every minute
+        const interval = setInterval(() => setNow(Date.now()), 60000)
+        return () => {
+            clearInterval(interval)
+            window.removeEventListener('resize', handleResize)
+        }
     }, [])
 
     const load = () => {
@@ -52,7 +66,7 @@ export default function TarefasPage() {
     }
     const openEdit = (t: any) => {
         setEditing(t)
-        setForm({ titulo: t.titulo, descricao: t.descricao || '', prioridade: t.prioridade, prazo: t.prazo || '', cliente_id: t.cliente_id || '', equipe_id: t.equipe_id || '', usuario_id: t.usuario_id || '', status: t.status, recorrencia: t.recorrencia || 'nenhuma', visivel_portal: t.visivel_portal || false })
+        setForm({ titulo: t.titulo, descricao: t.descricao || '', prioridade: t.prioridade, prazo: t.prazo ? t.prazo.split('T')[0] : '', cliente_id: t.cliente_id || '', equipe_id: t.equipe_id || '', usuario_id: t.usuario_id || '', status: t.status, recorrencia: t.recorrencia || 'nenhuma', visivel_portal: t.visivel_portal || false })
         setShowModal(true)
     }
     const handleSubmit = async (e: React.FormEvent) => {
@@ -75,7 +89,27 @@ export default function TarefasPage() {
 
     const hoje = new Date().toISOString().split('T')[0]
 
-    const filtered = tarefas.filter(t => filterPrio === 'all' || t.prioridade === filterPrio)
+    const formatarData = (dataStr: string | null) => {
+        if (!dataStr) return ''
+        const partes = dataStr.split('T')[0].split('-')
+        if (partes.length === 3) {
+            const [y, m, d] = partes
+            return `${d}/${m}/${y}`
+        }
+        return dataStr
+    }
+
+    const filtered = tarefas.filter(t => {
+        if (filterPrio !== 'all' && t.prioridade !== filterPrio) return false
+
+        if (t.status === 'concluida') {
+            const updatedAt = t.updated_at ? new Date(t.updated_at).getTime() : new Date(t.created_at).getTime()
+            if (now - updatedAt > 15 * 60 * 1000) {
+                return false
+            }
+        }
+        return true
+    })
     const byStatus = (status: StatusTarefa) => filtered.filter(t => t.status === status)
 
     const handleDragStart = (e: React.DragEvent, id: string) => {
@@ -106,7 +140,7 @@ export default function TarefasPage() {
                     <h1 className="page-title">Tarefas</h1>
                     <p className="page-subtitle">{stats.total} tarefas{stats.alta > 0 ? ` · ${stats.alta} alta prioridade` : ''}{stats.vencidas > 0 ? ` · ${stats.vencidas} vencida(s)` : ''}</p>
                 </div>
-                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
                     {/* Filtro prioridade */}
                     <div style={{ display: 'flex', gap: '0.375rem', background: 'var(--bg-secondary)', border: '1px solid var(--border)', padding: '0.25rem', borderRadius: '0.625rem' }}>
                         {['all', 'alta', 'media', 'baixa'].map(p => (
@@ -121,6 +155,15 @@ export default function TarefasPage() {
                             </button>
                         ))}
                     </div>
+                    {/* View Toggle (hidden on mobile) */}
+                    <div className="hidden md:flex" style={{ display: 'flex', gap: '0.25rem', background: 'var(--bg-secondary)', border: '1px solid var(--border)', padding: '0.25rem', borderRadius: '0.625rem' }}>
+                        <button onClick={() => setViewMode('kanban')} style={{ padding: '0.3rem', borderRadius: '0.4rem', border: 'none', background: viewMode === 'kanban' ? 'var(--color-purple-500)' : 'transparent', color: viewMode === 'kanban' ? '#fff' : 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.15s' }}>
+                            <LayoutGrid size={16} />
+                        </button>
+                        <button onClick={() => setViewMode('list')} style={{ padding: '0.3rem', borderRadius: '0.4rem', border: 'none', background: viewMode === 'list' ? 'var(--color-purple-500)' : 'transparent', color: viewMode === 'list' ? '#fff' : 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.15s' }}>
+                            <List size={16} />
+                        </button>
+                    </div>
                     {(user?.is_admin_matriz || user?.funcao) && (
                         <button onClick={() => openCreate()} className="btn-primary"><Plus size={16} /> Nova Tarefa</button>
                     )}
@@ -131,8 +174,8 @@ export default function TarefasPage() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '5rem' }}>
                     <Loader2 size={28} className="animate-spin" style={{ color: 'var(--color-purple-500)' }} />
                 </div>
-            ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem', alignItems: 'start' }}>
+            ) : viewMode === 'kanban' ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
                     {COLUMNS.map(col => {
                         const items = byStatus(col.id)
                         return (
@@ -228,7 +271,87 @@ export default function TarefasPage() {
                                                     {t.prazo && (
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                                             <Clock size={11} style={{ color: vencida ? '#ef4444' : 'var(--text-muted)' }} />
-                                                            <span style={{ fontSize: '0.7rem', color: vencida ? '#ef4444' : 'var(--text-muted)', fontWeight: 500 }}>{t.prazo}</span>
+                                                            <span style={{ fontSize: '0.7rem', color: vencida ? '#ef4444' : 'var(--text-muted)', fontWeight: 500 }}>{formatarData(t.prazo)}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {COLUMNS.map(col => {
+                        const items = byStatus(col.id)
+                        if (items.length === 0) return null
+                        return (
+                            <div key={col.id}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.75rem' }}>
+                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: col.color }} />
+                                    <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-primary)' }}>{col.label}</h3>
+                                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>({items.length})</span>
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                    {items.map(t => {
+                                        const vencida = t.prazo && t.prazo < hoje && t.status !== 'concluida'
+                                        const clienteNome = clientes.find(c => c.id === t.cliente_id)?.nome
+                                        return (
+                                            <div
+                                                key={t.id}
+                                                onClick={() => openEdit(t)}
+                                                style={{
+                                                    background: 'var(--bg-primary)', borderRadius: '0.75rem',
+                                                    border: `1px solid var(--border)`,
+                                                    borderLeft: `3px solid ${PRIO_COLORS[t.prioridade as Prioridade]}`,
+                                                    padding: '0.875rem 1rem',
+                                                    cursor: 'pointer', transition: 'all 0.15s',
+                                                    display: 'flex', alignItems: 'center', gap: '1rem',
+                                                    flexWrap: 'wrap'
+                                                }}
+                                            >
+                                                <div style={{ flex: '1 1 200px', minWidth: 0 }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                        <p style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.titulo}</p>
+                                                        {t.recorrencia && t.recorrencia !== 'nenhuma' && (
+                                                            <RefreshCw size={12} style={{ color: 'var(--color-purple-500)', flexShrink: 0 }} />
+                                                        )}
+                                                        {vencida && <AlertTriangle size={14} style={{ color: '#ef4444', flexShrink: 0 }} />}
+                                                    </div>
+                                                    {t.descricao && (
+                                                        <p style={{ fontSize: '0.775rem', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: '0.25rem' }}>{t.descricao}</p>
+                                                    )}
+                                                </div>
+
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', flexShrink: 0 }}>
+                                                    {clienteNome && (
+                                                        <div style={{ background: 'var(--bg-tertiary)', borderRadius: '0.4rem', padding: '0.2rem 0.5rem', display: 'flex', alignItems: 'center' }}>
+                                                            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 500 }}>{clienteNome}</span>
+                                                        </div>
+                                                    )}
+
+                                                    {(t.equipe?.nome || t.usuario?.nome) && (
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                                                            <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: 'var(--bg-tertiary)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                                <span style={{ fontSize: '0.5rem' }}>👥</span>
+                                                            </div>
+                                                            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                                                                {t.usuario?.nome ? `${t.usuario.nome}${t.equipe?.nome ? ` (${t.equipe.nome})` : ''}` : `Toda a Equipe: ${t.equipe?.nome}`}
+                                                            </span>
+                                                        </div>
+                                                    )}
+
+                                                    <span style={{ fontSize: '0.7rem', fontWeight: 700, color: PRIO_COLORS[t.prioridade as Prioridade], background: PRIO_BG[t.prioridade as Prioridade], padding: '0.15rem 0.5rem', borderRadius: '999px' }}>
+                                                        {PRIO_LABEL[t.prioridade as Prioridade]}
+                                                    </span>
+
+                                                    {t.prazo && (
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', width: '70px', justifyContent: 'flex-end' }}>
+                                                            <Clock size={11} style={{ color: vencida ? '#ef4444' : 'var(--text-muted)' }} />
+                                                            <span style={{ fontSize: '0.75rem', color: vencida ? '#ef4444' : 'var(--text-muted)', fontWeight: 500 }}>{formatarData(t.prazo)}</span>
                                                         </div>
                                                     )}
                                                 </div>

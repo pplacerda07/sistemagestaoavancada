@@ -33,6 +33,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     if (body.recorrencia !== undefined) updateData.recorrencia = body.recorrencia
     if (body.visivel_portal !== undefined) updateData.visivel_portal = body.visivel_portal
 
+    updateData.updated_at = new Date().toISOString()
+
     const { data: updatedTarefa, error: updateError } = await supabase.from('tarefas').update(updateData).eq('id', id).select(`
         *,
         cliente:clientes(id, nome),
